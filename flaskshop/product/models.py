@@ -114,8 +114,9 @@ class Product(Model):
         return cls.query.filter_by(is_featured=True).limit(num).all()
 
     def update_images(self, new_images):
+
         origin_ids = (
-            ProductImage.query.with_entities(ProductImage.product_id)
+            ProductImage.query.with_entities(ProductImage.id)
             .filter_by(product_id=self.id)
             .all()
         )

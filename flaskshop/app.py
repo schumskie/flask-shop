@@ -10,6 +10,7 @@ from flaskshop.extensions import (
     bcrypt,
     csrf_protect,
     db,
+    babel,
     debug_toolbar,
     login_manager,
     migrate,
@@ -57,6 +58,7 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     bootstrap.init_app(app)
+    babel.init_app(app)
 
 
 def register_blueprints(app):

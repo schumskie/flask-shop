@@ -102,7 +102,7 @@
               <div class="navbar__brand__cart float-right">
                 <a rel="nofollow" class="cart__icon" href="{{ url_for('checkout.cart_index') }}">
                   <span class="cart-label d-none d-md-inline-block">
-                    Your Cart
+                      {{_("Your Cart")}}
                   </span>
                   <div class="navbar__brand__cart__icon">
                     <svg data-src="{{ url_for('static', filename='img/cart.svg') }}" width="24" height="24"></svg>
@@ -167,7 +167,7 @@
                   <hr />
                 <li>
                   <a rel="nofollow" href="{{ url_for('checkout.cart_index') }}">
-                    Your Cart
+                      {{_("Your Cart")}}
                   </a>
                 </li>
                 {% if current_user.is_authenticated %}

@@ -47,68 +47,76 @@ const config = {
   output,
   devServer: {
     headers: { 'Access-Control-Allow-Origin': '*' },
+      proxy: {
+          changeOrigin: true,
+          "!/static/build/**": {
+              target: "http://localhost:5000", // points to flask dev server
+              autoRewrite: true,
+              changeOrigin: true,
+          },
+      },
   },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
             },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              plugins() {
-                return [autoprefixer];
-              },
+            {
+                test: /\.scss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true,
+                            plugins() {
+                                return [autoprefixer];
+                            },
+                        },
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
+                ],
             },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             },
-          },
+            {
+                test: /\.(eot|otf|png|svg|jpg|ttf|woff|woff2)(\?v=[0-9.]+)?$/,
+                loader: fileLoaderPath,
+                include: [
+                    resolve('node_modules'),
+                    resolve('flaskshop/assets/fonts'),
+                    resolve('flaskshop/assets/images'),
+                ],
+            },
         ],
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(eot|otf|png|svg|jpg|ttf|woff|woff2)(\?v=[0-9.]+)?$/,
-        loader: fileLoaderPath,
-        include: [
-          resolve('node_modules'),
-          resolve('flaskshop/assets/fonts'),
-          resolve('flaskshop/assets/images'),
-        ],
-      },
-    ],
-  },
-  plugins: [
-    bundleTrackerPlugin,
-    extractCssPlugin,
-    providePlugin,
-  ],
-  resolve: {
-    alias: {
-      jquery: resolve('node_modules/jquery/dist/jquery.js'),
-      'react': resolve('node_modules/react/dist/react.min.js'),
-      'react-dom': resolve('node_modules/react-dom/dist/react-dom.min.js'),
     },
-  },
+    plugins: [
+        bundleTrackerPlugin,
+        extractCssPlugin,
+        providePlugin,
+    ],
+    resolve: {
+        alias: {
+            jquery: resolve('node_modules/jquery/dist/jquery.js'),
+            'react': resolve('node_modules/react/dist/react.min.js'),
+            'react-dom': resolve('node_modules/react-dom/dist/react-dom.min.js'),
+        },
+    },
 };
 
 module.exports = config;

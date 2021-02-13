@@ -50,3 +50,6 @@ class Config:
     DEBUG_TB_PROFILER_ENABLED = True
 
     MESSAGE_QUOTA = 10
+
+    # BABEL
+    BABEL_DEFAULT_LOCALE = "en"

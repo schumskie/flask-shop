@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import abort
+from flask import abort, request, session, current_app
 from flask_bcrypt import Bcrypt
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager
@@ -11,6 +11,7 @@ from flask_sqlalchemy import SQLAlchemy, Model, BaseQuery, DefaultMeta, _QueryPr
 from sqlalchemy import Column, Integer, DateTime, event
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 import arrow
+from flask_babel import Babel, gettext
 
 from flaskshop.corelib.db import PropsItem, PropsMixin
 
@@ -20,6 +21,15 @@ login_manager = LoginManager()
 migrate = Migrate(compare_type=True)
 debug_toolbar = DebugToolbarExtension()
 bootstrap = Bootstrap()
+babel = Babel()
+
+
+@babel.localeselector
+def get_locale():
+    if request.args.get("lang"):
+        current_app.logger.info(request.args.get("lang"))
+        session["lang"] = request.args.get("lang")
+    return session.get("lang", "en")
 
 
 class BaseModel(PropsMixin, Model):
